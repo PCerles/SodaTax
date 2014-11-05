@@ -1,0 +1,80 @@
+#g-columns {
+  width: 1300px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#g-columns .g-column {
+  padding: 0 15px;
+  margin: 30px 0;
+  float: left;
+}
+
+#g-columns .g-left {
+  width: 355px;
+}
+
+#chart {
+	float: left;
+  margin-left: 100px;
+  margin-right: 40px;
+  margin-top: 40px;
+}
+
+.axis text {
+  font: 12px sans-serif;
+  color: black;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#g-soda-tax-text {
+  position: absolute;
+  top: 500px;
+  left: 50px;
+  height: 500px;
+}
+
+#g-soda-image {
+  position: absolute;
+  top: 300;
+  left: 500px;
+  height: 1150px;
+}
+
+#g-soda-image .g-base-soda {
+  position: absolute;
+  display: block;
+  top: -50px;
+}
+.g-overlays {
+  position: absolute;
+  top: -50px;
+  left: 0;
+}
+
+.g-overlays .g-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 420;
+  height: 300;
+}
+
+#g-water-image {
+  position: absolute;
+  top: 300;
+  left: 850px;
+  height: 1150px;
+}
+
+#g-water-image .g-base-water {
+  position: absolute;
+  display: block;
+  top: -50px;
+}
