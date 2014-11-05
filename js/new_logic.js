@@ -22,7 +22,8 @@ var height = 1600;
 var baseSoda = $("#g-soda-image"),
 	baseWater = $("#g-water-image")
 	sodaText = $("#g-soda-tax-text")
-	wj = $(window);
+	wj = $(window),
+	water_amount = $("#water-amount");
 
 var chart = d3.select("#chart")
     .attr("width", width)
@@ -41,6 +42,11 @@ var formatData = function (d) {
 var water = d3.select("#water-level");
 
 d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
+
+	for (var i = 0; i < data.length; i++) {
+    	data[i].donationNum = i;
+    }
+
 	var y = d3.time.scale()
 	 	.domain([d3.time.month.offset(data[0].Date, -1), data[data.length - 1].Date])
 	 	.range([0, height]);
@@ -68,7 +74,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 	var bar = water.select("rect")
 			       .attr("fill", "#47D1FF")
-			       .attr("transform", "translate(70,-70)");
+			       .attr("transform", "translate(75, 0)")
 
 	var waterLevel = d3.scale.linear()
 	    .range([641, 0])
@@ -78,8 +84,8 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		wtop = wj.scrollTop();
 		wbottom = wtop + wj.height();
 		wmiddle = (wbottom - wtop) / 2;
-		baseSoda.css("top", wtop + 150)
-		baseWater.css("top", wtop + 150)
+		baseSoda.css("top", wtop + 50)
+		baseWater.css("top", wtop + 50)
 		sodaText.css("top", wtop + wmiddle)
 
 		data.sort(function(a, b) {
@@ -88,6 +94,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 		bar.attr("y", waterLevel(data[0].Value))
 			 .attr("height", 641 - waterLevel(data[0].Value));
+	    water_amount.text("$" + data[0].Value + " in " + data[0].donationNum + " donations.");
 
 		tickHeights.forEach(function(d) {
 	      d.amount = Math.abs(wtop + wmiddle - d.top);
