@@ -15,10 +15,16 @@
 }
 
 #chart {
-	float: left;
+	position: absolute;
+  left: 400px;
   margin-left: 100px;
   margin-right: 40px;
   margin-top: 40px;
+}
+
+#marker-line {
+  position: absolute;
+  left: 490px;
 }
 
 .axis text {
@@ -68,13 +74,19 @@
 
 #g-water-image {
   position: absolute;
-  top: 300;
-  left: 850px;
-  height: 1150px;
+  top: 200;
+  left: 1000px;
+  height: 700px;
 }
 
 #g-water-image .g-base-water {
   position: absolute;
   display: block;
   top: -50px;
+}
+
+
+
+#water-amount {
+  text-align: center;
 }
