@@ -77,20 +77,20 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	var scrollSpy = function () {
 		wtop = wj.scrollTop();
 		wbottom = wtop + wj.height();
-		baseSoda.css("top", wtop);
-		baseWater.css("top", wtop);
-		sodaText.css("top", wtop);
+		wmiddle = (wbottom - wtop) / 2;
+		baseSoda.css("top", wtop + 150)
+		baseWater.css("top", wtop + 150)
+		sodaText.css("top", wtop + wmiddle)
 
-		wmiddle = (wtop + wbottom) / 2;
 		data.sort(function(a, b) {
-			return Math.abs(wtop - y(a.Date)) - Math.abs(wtop - y(b.Date));
+			return Math.abs(wtop + wmiddle - y(a.Date)) - Math.abs(wtop + wmiddle - y(b.Date));
 		});
 
 		bar.attr("y", waterLevel(data[0].Value))
-			 .attr("height", waterLevel(data[0].Value));
+			 .attr("height", 641 - waterLevel(data[0].Value));
 
 		tickHeights.forEach(function(d) {
-	      d.amount = Math.abs(d.top - wmiddle);
+	      d.amount = Math.abs(wtop + wmiddle - d.top);
 	    });
 
 		$(".g-overlays .g-overlay").css("opacity", 0);
