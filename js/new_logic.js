@@ -23,7 +23,8 @@ var baseSoda = $("#g-soda-image"),
 	baseWater = $("#g-water-image")
 	sodaText = $("#g-soda-tax-text")
 	wj = $(window),
-	water_amount = $("#water-amount");
+	water_amount = $("#water-amount")
+	marker_line = $("#marker-line");
 
 var chart = d3.select("#chart")
     .attr("width", width)
@@ -87,6 +88,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		baseSoda.css("top", wtop + 50)
 		baseWater.css("top", wtop + 50)
 		sodaText.css("top", wtop + wmiddle)
+		marker_line.css("top", wtop + wmiddle)
 
 		data.sort(function(a, b) {
 			return Math.abs(wtop + wmiddle - y(a.Date)) - Math.abs(wtop + wmiddle - y(b.Date));
@@ -94,7 +96,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 		bar.attr("y", waterLevel(data[0].Value))
 			 .attr("height", 641 - waterLevel(data[0].Value));
-	    water_amount.text("$" + data[0].Value + " in " + data[0].donationNum + " donations.");
+	    water_amount.text("$" + data[0].Value + " in " + data[0].donationNum + " donations");
 
 		tickHeights.forEach(function(d) {
 	      d.amount = Math.abs(wtop + wmiddle - d.top);
