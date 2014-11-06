@@ -107,5 +107,6 @@
 #water-amount {
   position: absolute;
   text-align: center;
+  left: 80px;
 }
 

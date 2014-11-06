@@ -98,8 +98,8 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	});
 
 	var bar = water.select("rect")
-			       .attr("fill", "#47D1FF")
-			       .attr("transform", "translate(75, 0)")
+			       .attr("fill", "#000000")
+			       .attr("transform", "translate(105, -12)")
 
 	var waterLevel = d3.scale.linear()
 	    .range([641, 500])
@@ -115,7 +115,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		marker_line.css("top", markerHeight(wtop + wmiddle));
 
 		data.sort(function(a, b) {
-			return Math.abs(wtop + wmiddle - y(a.Date)) - Math.abs(wtop + wmiddle - y(b.Date));
+			return Math.abs(wtop + wmiddle - y(a.Date) -509) - Math.abs(wtop + wmiddle - y(b.Date) -509);
 		});
 
 		bar.attr("y", waterLevel(data[0].Value))
