@@ -111,11 +111,11 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		wmiddle = (wbottom - wtop) / 2;
 		baseSoda.css("top", wtop - 400)
 		baseWater.css("top", wtop - 400)
-		sodaText.css("top", wtop + wmiddle)
+		sodaText.css("top", wtop + wmiddle - 509)
 		marker_line.css("top", markerHeight(wtop + wmiddle));
 
 		data.sort(function(a, b) {
-			return Math.abs(wtop + wmiddle - y(a.Date) -509) - Math.abs(wtop + wmiddle - y(b.Date) -509);
+			return Math.abs(wtop + wmiddle - y(a.Date) - 509) - Math.abs(wtop + wmiddle - y(b.Date) - 509);
 		});
 
 		bar.attr("y", waterLevel(data[0].Value))

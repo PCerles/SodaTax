@@ -28,10 +28,6 @@
   margin-top: 40px;
 }
 
-#chart {
-
-}
-
 #marker-line {
   position: absolute;
 }
@@ -80,17 +76,17 @@
 
 .g-level_1 {
   left: 127px;
-  top: 565px;
+  top: 555px;
 }
 
 .g-level_2 {
-  left: 117px;
-  top: 398px;
+  left: 116px;
+  top: 386px;
 }
 
 .g-level_3 {
-  left: 97px;
-  top: 135px;
+  left: 96px;
+  top: 125px;
 }
 
 #g-water-image {
@@ -107,6 +103,6 @@
 #water-amount {
   position: absolute;
   text-align: center;
-  left: 80px;
+  left: 120px;
 }
 
