@@ -12,8 +12,8 @@ Textbox for each milestone appears at each point of the page we have a milestone
 // did that resize function do anything?
 // why does it not work on first load?
 
-var textData = {"07 April": ["First donation.", "level_1"], "01 August": ["Soda donates first", "level_2"],
-				"16 September": ["Soda again", "level_3"], "01 October": ["Who knows", "level_4"],
+var textData = {"07 April": ["First donation", ""], "01 August": ["Soda donates first", "level_1"],
+				"16 September": ["Soda again", "level_2"], "01 October": ["Who knows", "level_3"],
 				"15 October": ["huh?", ""]}
 
 var width = 200;
@@ -24,7 +24,8 @@ var baseSoda = $("#g-soda-image"),
 	sodaText = $("#g-soda-tax-text")
 	wj = $(window),
 	water_amount = $("#water-amount")
-	marker_line = $("#marker-line");
+	marker_line = $("#marker-line")
+	imageBaseSoda = $(".g-base-soda");
 
 var chart = d3.select("#chart")
     .attr("width", width)
@@ -37,16 +38,22 @@ var formatData = function (d) {
   var non_offset = new Date(d.Date);
   non_offset.setDate(non_offset.getDate() + 1);
   d.Date = non_offset;
+  d.Donations = +d.Donations;
   return d;
 }
+/**
+var formatCurrency = function(value) {
+	// 1230 -> 1,230
+	// 23000 -> 23,000
+	// 230000 -> 230,000
+	var s = value.toString();
+	if s.length() > 3:
+		s = s.slice(-3);
+} */
 
 var water = d3.select("#water-level");
 
 d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
-
-	for (var i = 0; i < data.length; i++) {
-    	data[i].donationNum = i;
-    }
 
 	var y = d3.time.scale()
 	 	.domain([d3.time.month.offset(data[0].Date, -1), data[data.length - 1].Date])
@@ -78,17 +85,17 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 			       .attr("transform", "translate(75, 0)")
 
 	var waterLevel = d3.scale.linear()
-	    .range([641, 0])
+	    .range([641, 500])
 			.domain([0, d3.max(data, function(d){return d.Value})]);
 
 	var scrollSpy = function () {
 		wtop = wj.scrollTop();
 		wbottom = wtop + wj.height();
 		wmiddle = (wbottom - wtop) / 2;
-		baseSoda.css("top", wtop + 50)
-		baseWater.css("top", wtop + 50)
+		baseSoda.css("top", wtop - 400)
+		baseWater.css("top", wtop - 400)
 		sodaText.css("top", wtop + wmiddle)
-		marker_line.css("top", wtop + wmiddle)
+		marker_line.css("top", wtop -400 + wmiddle)
 
 		data.sort(function(a, b) {
 			return Math.abs(wtop + wmiddle - y(a.Date)) - Math.abs(wtop + wmiddle - y(b.Date));
@@ -96,7 +103,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 		bar.attr("y", waterLevel(data[0].Value))
 			 .attr("height", 641 - waterLevel(data[0].Value));
-	    water_amount.text("$" + data[0].Value + " in " + data[0].donationNum + " donations");
+	    water_amount.text("$" + data[0].Value + " in " + data[0].Donations + " donations");
 
 		tickHeights.forEach(function(d) {
 	      d.amount = Math.abs(wtop + wmiddle - d.top);
@@ -104,9 +111,11 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 		$(".g-overlays .g-overlay").css("opacity", 0);
 		tickHeights.sort(function(a, b){ return a.amount - b.amount; });
-		if (tickHeights[0].amount < 50) {
+		if (tickHeights[0].amount < 300) {
 			sodaText.text(textData[tickHeights[0].date][0]);
-			$(".g-overlay.g-" + textData[tickHeights[0].date][1]).css("opacity", 1);
+			var overlay = $(".g-overlay.g-" + textData[tickHeights[0].date][1]);
+			overlay.css("opacity", 1);
+			//overlay.css("top", baseSoda.attr("height") - overlay.attr("height"));
       		//$(".g-overlay.g-" + textData[tickHeights[0].date][1]).play()
 		} else {
 			sodaText.text("")

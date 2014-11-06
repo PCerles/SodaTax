@@ -14,6 +14,12 @@
   width: 355px;
 }
 
+#g-opening-paragraph {
+  height: 400px;
+  width: 300px;
+  text-align: center;
+}
+
 #chart {
 	position: absolute;
   left: 400px;
@@ -46,47 +52,56 @@
 }
 
 #g-soda-image {
+  text-align: center;
   position: absolute;
   top: 300;
-  left: 500px;
+  left: 550px;
   height: 1150px;
 }
 
 #g-soda-image .g-base-soda {
   position: absolute;
   display: block;
-  top: -50px;
+  top: 0px;
 }
+
 .g-overlays {
-  position: absolute;
-  top: -50px;
-  left: 0;
+  /*position: absolute;*/
 }
 
 .g-overlays .g-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
   opacity: 0;
-  width: 420;
-  height: 300;
+}
+
+.g-level_1 {
+  left: 127px;
+  top: 565px;
+}
+
+.g-level_2 {
+  left: 117px;
+  top: 398px;
+}
+
+.g-level_3 {
+  left: 97px;
+  top: 135px;
 }
 
 #g-water-image {
   position: absolute;
-  top: 200;
+  top: 200px;
   left: 1000px;
   height: 700px;
 }
 
-#g-water-image .g-base-water {
+#base-water {
   position: absolute;
-  display: block;
-  top: -50px;
 }
-
-
 
 #water-amount {
+  position: absolute;
   text-align: center;
 }
+
