@@ -20,17 +20,20 @@
   text-align: center;
 }
 
-#chart {
-	position: absolute;
+#chart-and-slider {
+  position: absolute;
   left: 400px;
   margin-left: 100px;
   margin-right: 40px;
   margin-top: 40px;
 }
 
+#chart {
+
+}
+
 #marker-line {
   position: absolute;
-  left: 490px;
 }
 
 .axis text {
@@ -51,6 +54,7 @@
   height: 500px;
 }
 
+/** switch to relative */
 #g-soda-image {
   text-align: center;
   position: absolute;
@@ -92,7 +96,7 @@
 #g-water-image {
   position: absolute;
   top: 200px;
-  left: 1000px;
+  left: 850px;
   height: 700px;
 }
 

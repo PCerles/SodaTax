@@ -53,6 +53,23 @@ var formatCurrency = function(value) {
 
 var water = d3.select("#water-level");
 
+var chartSlider = $("#chart-and-slider");
+var offset = chartSlider.offset();
+var chartTop = offset.top;
+var chartBottom = chartTop + chartSlider.height();
+
+function markerHeight(height) {
+	if (height < chartBottom ) {
+		if (height < chartTop) {
+			return 0;
+		} else {
+			return height - 509;
+		}
+	} else {
+		return chartBottom - 509;
+	}
+}
+
 d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 	var y = d3.time.scale()
@@ -69,7 +86,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 	chart.append("g")
 	    .attr("class", "y axis")
-	    .call(yAxis)
+	    .call(yAxis);
 
 	var ticks = $(".tick");
 	ticks.each(function(i, h) {
@@ -95,7 +112,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		baseSoda.css("top", wtop - 400)
 		baseWater.css("top", wtop - 400)
 		sodaText.css("top", wtop + wmiddle)
-		marker_line.css("top", wtop -400 + wmiddle)
+		marker_line.css("top", markerHeight(wtop + wmiddle));
 
 		data.sort(function(a, b) {
 			return Math.abs(wtop + wmiddle - y(a.Date)) - Math.abs(wtop + wmiddle - y(b.Date));
@@ -108,10 +125,12 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		tickHeights.forEach(function(d) {
 	      d.amount = Math.abs(wtop + wmiddle - d.top);
 	    });
-
-		$(".g-overlays .g-overlay").css("opacity", 0);
+	    // messed up because tick heights are different for soda/non-soda
+		if (wtop + wmiddle < d3.min(tickHeights, function(d) {return d.top})) {
+			$(".g-overlays .g-overlay").css("opacity", 0);
+		}
 		tickHeights.sort(function(a, b){ return a.amount - b.amount; });
-		if (tickHeights[0].amount < 300) {
+		if (tickHeights[0].amount < 50) {
 			sodaText.text(textData[tickHeights[0].date][0]);
 			var overlay = $(".g-overlay.g-" + textData[tickHeights[0].date][1]);
 			overlay.css("opacity", 1);
