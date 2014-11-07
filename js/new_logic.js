@@ -70,6 +70,16 @@ function markerHeight(height) {
 	}
 }
 
+function bottleHeight(height) {
+	if (height < 0) {
+		return 0;
+	} else if (height > chartBottom) {
+		return chartBottom;
+	} else {
+		return height;
+	}
+}
+
 d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
 	var y = d3.time.scale()
@@ -81,7 +91,6 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	    .orient('right')
 	    .tickValues([data[0].Date, new Date(2014, 7, 1), new Date(2014, 8, 16), new Date(2014, 9, 1), new Date(2014, 9, 15)])
 	    .tickFormat(d3.time.format('%d %B'));
-	// tick values shouldn't be hardcoded..?
 	var tickHeights = [];
 
 	chart.append("g")
@@ -98,8 +107,9 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	});
 
 	var bar = water.select("rect")
-			       .attr("fill", "#000000")
+			       .attr("fill", "#33ADFF")
 			       .attr("transform", "translate(105, -12)")
+			       .attr("opacity", "0.8");
 
 	var waterLevel = d3.scale.linear()
 	    .range([641, 500])
@@ -109,16 +119,18 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		wtop = wj.scrollTop();
 		wbottom = wtop + wj.height();
 		wmiddle = (wbottom - wtop) / 2;
-		baseSoda.css("top", wtop - 400)
-		baseWater.css("top", wtop - 400)
-		sodaText.css("top", wtop + wmiddle - 509)
+		baseSoda.css("top", bottleHeight(wtop - 400));
+		baseWater.css("top", bottleHeight(wtop - 400));
+		sodaText.css("top", wtop + wmiddle - 509);
 		marker_line.css("top", markerHeight(wtop + wmiddle));
 
 		data.sort(function(a, b) {
 			return Math.abs(wtop + wmiddle - y(a.Date) - 509) - Math.abs(wtop + wmiddle - y(b.Date) - 509);
 		});
 
-		bar.attr("y", waterLevel(data[0].Value))
+		bar.transition()
+			 .duration(50)
+			 .attr("y", waterLevel(data[0].Value))
 			 .attr("height", 641 - waterLevel(data[0].Value));
 	    water_amount.text("$" + data[0].Value + " in " + data[0].Donations + " donations");
 
