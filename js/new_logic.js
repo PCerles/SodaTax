@@ -12,9 +12,9 @@ Textbox for each milestone appears at each point of the page we have a milestone
 // did that resize function do anything?
 // why does it not work on first load?
 
-var textData = {"07 April": ["First donation", ""], "01 August": ["Soda donates first", "level_1"],
-				"16 September": ["Soda again", "level_2"], "01 October": ["Who knows", "level_3"],
-				"15 October": ["huh?", ""]}
+var textData = {"07 April": ["First donation", "", ""], "01 August": ["Soda donates first", "level_1", "$300,000"],
+				"16 September": ["Soda again", "level_2", "$800,000"], "01 October": ["Who knows", "level_3", "$1,400,000"],
+				"15 October": ["huh?", "", "$1,400,000"]}
 
 var width = 200;
 var height = 1600;
@@ -24,6 +24,7 @@ var baseSoda = $("#g-soda-image"),
 	sodaText = $("#g-soda-tax-text")
 	wj = $(window),
 	water_amount = $("#water-amount")
+	soda_amount = $("#soda-amount")
 	marker_line = $("#marker-line")
 	imageBaseSoda = $(".g-base-soda");
 
@@ -65,7 +66,7 @@ function markerHeight(height) {
 			return height - 509;
 		}
 	} else {
-		return chartBottom - 509;
+		return chartBottom - 517;
 	}
 }
 
@@ -78,6 +79,10 @@ function bottleHeight(height) {
 		return height;
 	}
 }
+
+var imageHeight = 641
+	imageWidth = 420
+	waterMaxHeight = imageHeight - 141;
 
 d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 
@@ -100,30 +105,30 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	ticks.each(function(i, h) {
 	    hj = $(h);
 	    tickHeights.push({
-				top: hj.offset().top,
+				top: +hj.attr("transform").slice(12,-1), // THIS IS SO HACKY KILL ME 
 				date: hj.text()
 	    });
 	});
-
+	
 	var bar = water.select("rect")
 			       .attr("fill", "#33ADFF")
 			       .attr("transform", "translate(105, -12)")
 			       .attr("opacity", "0.8");
 
 	var waterLevel = d3.scale.linear()
-	    .range([641, 500])
+	    .range([imageHeight, waterMaxHeight])
 			.domain([0, d3.max(data, function(d){return d.Value})]);
 
 	var imageLoaded = {"level_1": false, "level_2": false, "level_3": false}
 
 	var scrollSpy = function () {
 		wtop = wj.scrollTop();
-		wbottom = wtop + wj.height();
-		wmiddle = (wbottom - wtop) / 2;
+		wmiddle = wj.height() / 2;
 		baseSoda.css("top", bottleHeight(wtop - 400));
 		baseWater.css("top", bottleHeight(wtop - 400));
-		sodaText.css("top", wtop + wmiddle - 509);
-		marker_line.css("top", markerHeight(wtop + wmiddle));
+		sodaText.css("top", markerHeight(wtop + wmiddle));
+		var mark_height = markerHeight(wtop + wmiddle);
+		marker_line.css("top", mark_height);
 
 		data.sort(function(a, b) {
 			return Math.abs(wtop + wmiddle - y(a.Date) - 509) - Math.abs(wtop + wmiddle - y(b.Date) - 509);
@@ -132,11 +137,11 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		bar.transition()
 			 .duration(50)
 			 .attr("y", waterLevel(data[0].Value))
-			 .attr("height", 641 - waterLevel(data[0].Value));
+			 .attr("height", imageHeight - waterLevel(data[0].Value));
 	    water_amount.text("$" + data[0].Value + " in " + data[0].Donations + " donations");
 
 		tickHeights.forEach(function(d) {
-	      d.amount = Math.abs(wtop + wmiddle - d.top);
+	      d.amount = Math.abs(mark_height - d.top);
 	    });
 	    // messed up because tick heights are different for soda/non-soda
 		if (wtop + wmiddle < chartTop) {
@@ -146,6 +151,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 			}
 		}
 		tickHeights.sort(function(a, b){ return a.amount - b.amount; });
+		console.log(tickHeights[0]);
 		var level = textData[tickHeights[0].date][1];
 		if (tickHeights[0].amount < 50) {
 			if (!imageLoaded[level]) {
@@ -155,6 +161,7 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 				imageLoaded[level] = true;
 			}
 			sodaText.text(textData[tickHeights[0].date][0]);
+			soda_amount.text(textData[tickHeights[0].date][2])
 		} else {
 			sodaText.text("")
 		}
