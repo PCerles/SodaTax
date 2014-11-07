@@ -33,8 +33,7 @@ var chart = d3.select("#chart")
     .append("g");
 
 var formatData = function (d) {
-	// Note, some dates have multiple entries. consider just formatting them so you take the largest of those dates?
-  d.Value = +d.Value; // coerce to number
+  d.Value = +d.Value;
   var non_offset = new Date(d.Date);
   non_offset.setDate(non_offset.getDate() + 1);
   d.Date = non_offset;
@@ -115,6 +114,8 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	    .range([641, 500])
 			.domain([0, d3.max(data, function(d){return d.Value})]);
 
+	var imageLoaded = {"level_1": false, "level_2": false, "level_3": false}
+
 	var scrollSpy = function () {
 		wtop = wj.scrollTop();
 		wbottom = wtop + wj.height();
@@ -138,27 +139,28 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 	      d.amount = Math.abs(wtop + wmiddle - d.top);
 	    });
 	    // messed up because tick heights are different for soda/non-soda
-		if (wtop + wmiddle < d3.min(tickHeights, function(d) {return d.top})) {
+		if (wtop + wmiddle < chartTop) {
 			$(".g-overlays .g-overlay").css("opacity", 0);
+			for (var level in imageLoaded) {
+				imageLoaded[level] = false;
+			}
 		}
 		tickHeights.sort(function(a, b){ return a.amount - b.amount; });
-		if (tickHeights[0].amount < 50) {
+		var level = textData[tickHeights[0].date][1];
+		if (tickHeights[0].amount < 50 && !imageLoaded[level]) {
 			sodaText.text(textData[tickHeights[0].date][0]);
-			var overlay = $(".g-overlay.g-" + textData[tickHeights[0].date][1]);
+			var overlay = $(".g-overlay.g-" + level);
+			overlay.children('img').attr("src", overlay.children('img').attr("src") + "?random=" + new Date().getTime());
 			overlay.css("opacity", 1);
-			//overlay.css("top", baseSoda.attr("height") - overlay.attr("height"));
-      		//$(".g-overlay.g-" + textData[tickHeights[0].date][1]).play()
+			imageLoaded[level] = true;
 		} else {
 			sodaText.text("")
 		}
-
-		/**
-		water
-			.data(data)
-			.attr("fill", "#fdcdac");*/
-		/**
-		$(".g-overlay.g-" + textData[tickHeights[0].date][1]).css("opacity", 1);*/		
 	};
-
 	wj.scroll(scrollSpy);
 });
+
+
+
+
+
