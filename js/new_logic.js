@@ -147,12 +147,14 @@ d3.tsv("../data/bev_dates.tsv", formatData, function(error, data) {
 		}
 		tickHeights.sort(function(a, b){ return a.amount - b.amount; });
 		var level = textData[tickHeights[0].date][1];
-		if (tickHeights[0].amount < 50 && !imageLoaded[level]) {
+		if (tickHeights[0].amount < 50) {
+			if (!imageLoaded[level]) {
+				var overlay = $(".g-overlay.g-" + level);
+				overlay.children('img').attr("src", overlay.children('img').attr("src") + "?random=" + new Date().getTime());
+				overlay.css("opacity", 1);
+				imageLoaded[level] = true;
+			}
 			sodaText.text(textData[tickHeights[0].date][0]);
-			var overlay = $(".g-overlay.g-" + level);
-			overlay.children('img').attr("src", overlay.children('img').attr("src") + "?random=" + new Date().getTime());
-			overlay.css("opacity", 1);
-			imageLoaded[level] = true;
 		} else {
 			sodaText.text("")
 		}
