@@ -12,9 +12,9 @@ Textbox for each milestone appears at each point of the page we have a milestone
 // did that resize function do anything?
 // why does it not work on first load?
 
-var textData = {"07 April": ["First donation", "", ""], "01 August": ["Soda donates first", "level_1", "$300,000"],
-				"16 September": ["Soda again", "level_2", "$800,000"], "01 October": ["Who knows", "level_3", "$1,400,000"],
-				"15 October": ["huh?", "", "$1,400,000"]}
+var textData = {"07 April": ["First donation", "", ""], "01 August": ["A political arm of the American Beverage Association donates $300,000 to the the fight against Measure D.", "level_1", "$300,000"],
+				"16 September": ["The ABA donates another $500,000 to the the fight against Measure D, bringing its total contributions to $800,000.", "level_2", "$800,000"], "01 October": ["The ABA donates another $600,000, bringing its total contributions to $1.4 million.", "level_3", "$1,400,000"],
+				"15 October": ["Michael Bloomberg is a baller", "", "$1,400,000"]}
 
 var width = 200;
 var height = 1600;
